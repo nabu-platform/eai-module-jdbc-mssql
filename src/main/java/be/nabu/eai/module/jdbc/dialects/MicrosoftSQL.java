@@ -46,6 +46,11 @@ public class MicrosoftSQL implements SQLDialect {
 		return false;
 	}
 	
+	@Override
+	public Integer getDefaultPort() {
+		return 1433;
+	}
+
 	// throws unsupported operation exception for createArrayOf
 	@Override
 	public void setArray(PreparedStatement statement, Element<?> element, int index, Collection<?> collection) throws SQLException {
