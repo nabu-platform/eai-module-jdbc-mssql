@@ -145,7 +145,7 @@ public class MicrosoftSQL implements SQLDialect {
 	}
 	
 	@Override
-	public String buildCreateSQL(ComplexType type) {
+	public String buildCreateSQL(ComplexType type, boolean compact) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("create table " + EAIRepositoryUtils.uncamelify(getName(type.getProperties())) + " (\n");
 		boolean first = true;
@@ -412,7 +412,7 @@ public class MicrosoftSQL implements SQLDialect {
 	}
 
 	@Override
-	public String buildInsertSQL(ComplexContent content) {
+	public String buildInsertSQL(ComplexContent content, boolean compact) {
 		StringBuilder keyBuilder = new StringBuilder();
 		StringBuilder valueBuilder = new StringBuilder();
 		SimpleDateFormat timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
