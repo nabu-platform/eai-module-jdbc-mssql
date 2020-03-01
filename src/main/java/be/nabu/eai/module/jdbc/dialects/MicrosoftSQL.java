@@ -22,9 +22,9 @@ import be.nabu.libs.evaluator.QueryParser;
 import be.nabu.libs.evaluator.QueryPart;
 import be.nabu.libs.property.ValueUtils;
 import be.nabu.libs.property.api.Value;
+import be.nabu.libs.services.jdbc.JDBCUtils;
 import be.nabu.libs.services.jdbc.api.SQLDialect;
 import be.nabu.libs.types.DefinedTypeResolverFactory;
-import be.nabu.libs.types.TypeUtils;
 import be.nabu.libs.types.api.ComplexContent;
 import be.nabu.libs.types.api.ComplexType;
 import be.nabu.libs.types.api.DefinedType;
@@ -150,7 +150,7 @@ public class MicrosoftSQL implements SQLDialect {
 		builder.append("create table " + EAIRepositoryUtils.uncamelify(getName(type.getProperties())) + " (\n");
 		boolean first = true;
 		StringBuilder constraints = new StringBuilder();
-		for (Element<?> child : TypeUtils.getAllChildren(type)) {
+		for (Element<?> child : JDBCUtils.getFieldsInTable(type)) {
 			if (first) {
 				first = false;
 			}
@@ -420,7 +420,7 @@ public class MicrosoftSQL implements SQLDialect {
 		timestampFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 		dateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Date date = new Date();
-		for (Element<?> element : TypeUtils.getAllChildren(content.getType())) {
+		for (Element<?> element : JDBCUtils.getFieldsInTable(content.getType())) {
 			if (element.getType() instanceof SimpleType) {
 				Class<?> instanceClass = ((SimpleType<?>) element.getType()).getInstanceClass();
 				if (!keyBuilder.toString().isEmpty()) {
