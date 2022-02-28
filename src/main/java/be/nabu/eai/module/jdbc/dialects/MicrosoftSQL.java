@@ -33,6 +33,7 @@ import be.nabu.libs.types.api.SimpleType;
 import be.nabu.libs.types.properties.CollectionNameProperty;
 import be.nabu.libs.types.properties.ForeignKeyProperty;
 import be.nabu.libs.types.properties.FormatProperty;
+import be.nabu.libs.types.properties.IndexedProperty;
 import be.nabu.libs.types.properties.MinOccursProperty;
 import be.nabu.libs.types.properties.NameProperty;
 import be.nabu.libs.types.properties.UniqueProperty;
@@ -204,6 +205,18 @@ public class MicrosoftSQL implements SQLDialect {
 			builder.append(",\n").append(constraints.toString());
 		}
 		builder.append("\n);");
+		// create indexes
+		builder.append("\n");
+		for (Element<?> child : JDBCUtils.getFieldsInTable(type)) {
+			Value<Boolean> indexedProperty = child.getProperty(IndexedProperty.getInstance());
+			if (indexedProperty != null && indexedProperty.getValue() != null && indexedProperty.getValue()) {
+				String tableName2 = EAIRepositoryUtils.uncamelify(getName(type.getProperties()));
+				String columnName = EAIRepositoryUtils.uncamelify(child.getName());
+				String seqName = "idx_" + tableName2 + "_" + columnName;
+				String sql = "create index " + seqName + " on " + tableName2 + "(" + columnName + ");\n";
+				builder.append(sql);
+			}
+		}
 		return builder.toString();
 	}
 
