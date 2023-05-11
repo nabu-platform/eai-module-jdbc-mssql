@@ -45,9 +45,10 @@ public class MicrosoftWizard implements JDBCPoolWizard<MicrosoftParameters> {
 						parameters.setDatabase(split2[1]);
 					}
 				}
-				String [] subParts = parts[1].split("/");
-				parameters.setPort(Integer.parseInt(subParts[0]));
-				parameters.setDatabase(subParts[1]);
+				// @2023-04-25 seems to be old code that does not work, it fails because it does not match the
+//				String [] subParts = parts[1].split("/");
+//				parameters.setPort(Integer.parseInt(subParts[0]));
+//				parameters.setDatabase(subParts[1]);
 
 				parameters.setUsername(pool.getConfig().getUsername());
 				parameters.setPassword(pool.getConfig().getPassword());
