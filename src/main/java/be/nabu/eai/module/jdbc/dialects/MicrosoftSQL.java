@@ -190,6 +190,10 @@ public class MicrosoftSQL implements SQLDialect {
 				Integer value = ValueUtils.getValue(MinOccursProperty.getInstance(), child.getProperties());
 				if (value == null || value > 0) {
 					builder.append(" not null");
+					// for mandatory boolean values, we automatically insert "default false", this makes it easier to add mandatory boolean later on with alter scripts
+					if (Boolean.class.isAssignableFrom(((SimpleType<?>) child.getType()).getInstanceClass())) {
+						builder.append(" default false");
+					}
 				}
 			}
 			
